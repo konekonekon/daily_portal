@@ -19,7 +19,7 @@ def get_quebectime():
 def get_citiesweatherdata():
     weather_key = api_keys['weather']
     r = requests.get(
-        'http://api.openweathermap.org/data/2.5/group?id=6455259,1850147,6077243&units=metric&appid=***'
+        'http://api.openweathermap.org/data/2.5/group?id=6455259,1850147,6077243&units=metric&appid=' + weather_key
     )
     paris_weather = json.loads(r.text)['list'][0]
     tokyo_weather = json.loads(r.text)['list'][1]
