@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Daily Portal</title>
+  </head>
+
+  <body>
+    <h2>Current time</h2>
+    <p>Paris: {{ ftime }} </p>
+    <p>Tokyo: {{ jtime }} </p>
+    <p>Montréal: {{ qtime }} </p>
+
+
+    <h2>Weather forecast</h2>
+    {# <ul>
+    {% for c in content %}
+        <li>: {{ c }}</li>
+    {% endfor %}
+    </ul> #}
+
+    <ul>
+    {% for citydata in weatherdata %}
+      <li>
+      {{ citydata['Cityname'] }}:
+          {% for key in citydata.keys() if key != 'Cityname' %}
+              <ul>
+                  <li>{{ key }} : {{ citydata[key] }}</li>
+              </ul>
+          {% endfor %}
+      </li>
+    {% endfor %}
+    </ul>
+
+
+    <h2>RATP info</h2>
+    <p>next train in Sceaux station: </p>
+    <p>{{ ratp }}</p>
+  </body>
+</html>
