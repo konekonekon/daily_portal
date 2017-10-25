@@ -63,11 +63,16 @@ def index():
     directions = tree.xpath('//strong[@class="directions"]/text()')
     heurewrap = tree.xpath('//span[@class="heure-wrap"]/text()')
     passingtime = list()
-    passingtime = [h for h in heurewrap if h != heurewrap[0] and h != "Heure de passage"]
-    #passingtime = [h if h != "Heure de passage" else "ok" for h in heurewrap]
-    # for h in heurewrap:
-    #     if h == "Heure de passage":
-    #         heurewrap.remove(h)
+    #passingtime = [h for h in heurewrap if h != heurewrap[0] and h != "Heure de passage"]
+    #passingtime = [h for h in heurewrap if h != heurewrap[0]]
+    for h in heurewrap:
+        if h != heurewrap[0]:
+            passingtime.append(h)
+
+    if passingtime[0] == "Heure de passage":
+        passingtime.remove(passingtime[0])
+
+
 
 
 

@@ -38,15 +38,21 @@
     <p>{{ direction }}</p>
     <p>{{ ratp }}</p>
 
+    {% set listindex = {} %}
+    {% for t in ratp if t == "Heure de passage" %}
+        {% if ratp.index(t) != 0 %}
+          {% set _ = listindex.update({'index' : ratp.index(t)}) %}
+        {% endif %}
+    {% endfor %}
+
     <ul>
     {% for d in direction %}
         <li>
         {{ d }}:
             {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                {{ ratp[:5] }}
-
+                {{ ratp[:listindex['index']] }}
             {% else %}
-                {{ ratp[5:] }}
+                {{ ratp[listindex['index']+1:] }}
             {% endif %}
         </li>
     {% endfor %}
