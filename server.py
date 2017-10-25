@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import arrow
 import requests
 import json
+from api_keys import api_keys
 
 app = Flask(__name__)
 
@@ -53,17 +54,17 @@ def index():
         dict_weatherdata.append(parse_weatherdata(databycity))
 
     #ratp
-    response = requests.get(
-        'https://www.ratp.fr/horaires?networks=rer&line_rer=B&line_busratp=&name_line_busratp=&id_line_busratp=&line_noctilien=&name_line_noctilien=&id_line_noctilien=&stop_point_rer=Sceaux&type=now&departure_date=24%2F10%2F2017&departure_hour=22&departure_minute=50&op=Rechercher&form_build_id=form-nkSV0Xj6ef_xE5T7QuSX4yf6OqJaExtJxRMrbKQspqc&form_id=scheduledform'
-    )
-    ratp_response = json.loads(response.text)
+    # response = requests.get(
+    #     'https://www.ratp.fr/horaires?networks=rer&line_rer=B&line_busratp=&name_line_busratp=&id_line_busratp=&line_noctilien=&name_line_noctilien=&id_line_noctilien=&stop_point_rer=Sceaux&type=now&departure_date=24%2F10%2F2017&departure_hour=22&departure_minute=50&op=Rechercher&form_build_id=form-nkSV0Xj6ef_xE5T7QuSX4yf6OqJaExtJxRMrbKQspqc&form_id=scheduledform'
+    # )
+    # ratp_response = json.loads(response.text)
 
 
     return render_template('portal.html',
             ftime=frtime, jtime=jptime, qtime=qctime,
             # content=get_citiesweatherdata(),
             weatherdata=dict_weatherdata,
-            ratp=ratp_response
+            # ratp=ratp_response
             )
 
 
