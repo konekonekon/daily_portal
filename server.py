@@ -55,19 +55,29 @@ def index():
         dict_weatherdata.append(parse_weatherdata(databycity))
 
     #ratp
+    #https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&departure_date=25%2F10%2F2017&departure_hour=12&departure_minute=45&op=Rechercher&form_build_id=form-3s9chyTmgWZFUA58gygtM3MiRfgCx1WMrqvDQqAKHfE&form_id=scheduledform
     page = requests.get('https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&op=Rechercher')
+    #page = requests.get('https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&departure_date=25%2F10%2F2017&departure_hour=13&departure_minute=15&op=Rechercher&form_build_id=form-3s9chyTmgWZFUA58gygtM3MiRfgCx1WMrqvDQqAKHfE&form_id=scheduledform')
+    #page = requests.get('https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&op=Rechercher&form_build_id=form-3s9chyTmgWZFUA58gygtM3MiRfgCx1WMrqvDQqAKHfE&form_id=scheduledform')
     tree = html.fromstring(page.content)
     directions = tree.xpath('//strong[@class="directions"]/text()')
+    heurewrap = tree.xpath('//span[@class="heure-wrap"]/text()')
+    passingtime = list()
+    passingtime = [h for h in heurewrap if h != heurewrap[0] and h != "Heure de passage"]
+    #passingtime = [h if h != "Heure de passage" else "ok" for h in heurewrap]
+    # for h in heurewrap:
+    #     if h == "Heure de passage":
+    #         heurewrap.remove(h)
 
 
-    passages = tree.xpath('//span[@class="heure-wrap"]/text()')
 
     return render_template('portal.html',
             ftime=frtime, jtime=jptime, qtime=qctime,
             # content=get_citiesweatherdata(),
             weatherdata=dict_weatherdata,
+            heure=heurewrap,
             direction=directions,
-            ratp=passages
+            ratp=passingtime
             )
 
 

@@ -34,7 +34,22 @@
 
     <h2>RATP info</h2>
     <p>next train in Sceaux station: </p>
+    <p>{{ heure }}</p>
     <p>{{ direction }}</p>
     <p>{{ ratp }}</p>
+
+    <ul>
+    {% for d in direction %}
+        <li>
+        {{ d }}:
+            {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
+                {{ ratp[:5] }}
+
+            {% else %}
+                {{ ratp[5:] }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
   </body>
 </html>
