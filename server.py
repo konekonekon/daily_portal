@@ -61,28 +61,20 @@ def index():
     #page = requests.get('https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&op=Rechercher&form_build_id=form-3s9chyTmgWZFUA58gygtM3MiRfgCx1WMrqvDQqAKHfE&form_id=scheduledform')
     tree = html.fromstring(page.content)
     directions = tree.xpath('//strong[@class="directions"]/text()')
-    heurewrap = tree.xpath('//span[@class="heure-wrap"]/text()')
-    passingtime = list()
-    #passingtime = [h for h in heurewrap if h != heurewrap[0] and h != "Heure de passage"]
-    #passingtime = [h for h in heurewrap if h != heurewrap[0]]
-    for h in heurewrap:
-        if h != heurewrap[0]:
-            passingtime.append(h)
+    passingtime = tree.xpath('//span[@class="heure-wrap"]/text()')
+    # remove the current search time
+    passingtime = [h for h in passingtime if h != passingtime[0]]
 
     if passingtime[0] == "Heure de passage":
         passingtime.remove(passingtime[0])
-
-
-
 
 
     return render_template('portal.html',
             ftime=frtime, jtime=jptime, qtime=qctime,
             # content=get_citiesweatherdata(),
             weatherdata=dict_weatherdata,
-            heure=heurewrap,
-            direction=directions,
-            ratp=passingtime
+            dirs=directions,
+            ptimes=passingtime
             )
 
 

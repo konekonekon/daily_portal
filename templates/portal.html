@@ -34,25 +34,24 @@
 
     <h2>RATP info</h2>
     <p>next train in Sceaux station: </p>
-    <p>{{ heure }}</p>
-    <p>{{ direction }}</p>
-    <p>{{ ratp }}</p>
+    <p>{{ dirs }}</p>
+    <p>{{ ptimes }}</p>
 
     {% set listindex = {} %}
-    {% for t in ratp if t == "Heure de passage" %}
-        {% if ratp.index(t) != 0 %}
-          {% set _ = listindex.update({'index' : ratp.index(t)}) %}
+    {% for t in ptimes if t == "Heure de passage" %}
+        {% if ptimes.index(t) != 0 %}
+          {% set _ = listindex.update({'index' : ptimes.index(t)}) %}
         {% endif %}
     {% endfor %}
 
     <ul>
-    {% for d in direction %}
+    {% for d in dirs %}
         <li>
         {{ d }}:
             {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                {{ ratp[:listindex['index']] }}
+                {{ ptimes[:listindex['index']] }}
             {% else %}
-                {{ ratp[listindex['index']+1:] }}
+                {{ ptimes[listindex['index']+1:] }}
             {% endif %}
         </li>
     {% endfor %}
