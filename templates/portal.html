@@ -34,13 +34,11 @@
 
     <h2>RATP info</h2>
     <p>Next train in Sceaux station: </p>
-    <p>{{ ptimes }}</p>
+    <p>{{ horaire }}</p>
 
     {% set listindex = {} %}
     {% for t in ptimes if t == "Heure de passage" %}
-        {% if ptimes.index(t) != 0 %}
           {% set _ = listindex.update({'index' : ptimes.index(t)}) %}
-        {% endif %}
     {% endfor %}
 
     <ul>
@@ -48,12 +46,12 @@
         <li>
         {{ d }}:
             {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-              {% for times1 in ptimes[:listindex['index']] %}
-                {{ times1 }}
-              {% endfor %}
+                {% for times1 in ptimes[:listindex['index']] %}
+                    {{ times1 }}
+                {% endfor %}
             {% else %}
                 {% for times2 in ptimes[listindex['index']+1:] %}
-                  {{ times2 }}
+                    {{ times2 }}
                 {% endfor %}
             {% endif %}
         </li>
