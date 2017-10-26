@@ -42,18 +42,42 @@ def parse_weatherdata(wdata):
         'Temperature':temp, 'Humidity':humidity, 'Wind':wind, 'Clouds':clouds }
 
 
-def get_weatherdatalist(cid):
+def get_weatherdatalist(c):
+    # get cityID
+    if c == 'Paris':
+        cid = '6455259'
+    elif c == 'Tokyo':
+        cid = '1850147'
+    elif c == 'Montreal':
+        cid = '6077243'
+
+    # get weather forecast data
     weather_key = api_keys['weather']
     res = requests.get(
         'http://api.openweathermap.org/data/2.5/forecast?id=' + cid + '&units=metric&appid=' + weather_key
     )
-    weatherforecast_list = json.loads(res.text)['list'][:5]
-
+    if c == json.loads(res.text)['city']['name']:
+        weatherforecast_list = json.loads(res.text)['list'][:5]
     return weatherforecast_list
 
-def parse_weatherdata2(cityid):
-    weatherforecast = {}
-    for w in get_weatherdatalist(cityid):
+def get_cityid(c):
+    if c == 'Paris':
+        cityid = '6455259'
+    elif c == 'Tokyo':
+        cityid = '1850147'
+    elif c == 'Montreal':
+        cityid = '6077243'
+    # City IDs for openweathermap
+    # paris_id = '6455259'
+    # tokyo_id = '1850147'
+    # montreal_id = '6077243'
+    return cityid
+
+def parse_weatherdata2(city):
+    # c_id = get_cityid(city)
+
+    forecastbytime = {}
+    for w in get_weatherdatalist(city):
         temp = w['main']['temp']
         humidity = w['main']['humidity']
         main = w['weather'][0]['main']
@@ -62,7 +86,7 @@ def parse_weatherdata2(cityid):
         wind = w['wind']['speed']
         clouds = w['clouds']['all']
         datehours = w['dt_txt']
-        weatherforecast[datehours] = {
+        forecastbytime[datehours] = {
             'temp' : temp,
             'humidity' : humidity,
             'weather' : main,
@@ -71,8 +95,7 @@ def parse_weatherdata2(cityid):
             'wind' : wind,
             'clouds' : clouds
         }
-
-    return weatherforecast
+    return forecastbytime
 
 
 def get_traininfo():
@@ -88,45 +111,47 @@ def get_traininfo():
     # remove the first item
     if passingtime[0] == "Heure de passage":
         passingtime.remove(passingtime[0])
-
     return passingtime, heurewrap, directions
 
 
 @app.route('/', methods=['GET'])
 def index():
-    #time
+    # CURRENT TIME
     frtime = get_francetime()
     jptime = get_jptime()
     qctime = get_quebectime()
 
-    #weather
-    # City IDs for openweathermap
-    paris_id = '6455259'
-    tokyo_id = '1850147'
-    montreal_id = '6077243'
-
+    # WEATHER
     #current
     dict_weatherdata = list()
     for databycity in get_citiesweatherdata():
         dict_weatherdata.append(parse_weatherdata(databycity))
 
-    #forecast
-    paris_forecast = parse_weatherdata2(paris_id)
+    # FORECAST
+    forecasts = {}
+    for city in ['Paris', 'Tokyo', 'Montreal']:
+        #forecasts.append(parse_weatherdata2(city))
+        forecasts[city] = parse_weatherdata2(city)
+    # paris_forecast = parse_weatherdata2(paris_id)
+    # tokyo_forecast = parse_weatherdata2(tokyo_id)
+    # montreal_forecast = parse_weatherdata2(montreal_id)
 
-
-    #ratp
+    # RATP
     passtimes, heures, direcs = get_traininfo()
 
 
     return render_template('portal.html',
             ftime=frtime, jtime=jptime, qtime=qctime,
+
             # content=get_citiesweatherdata(),
             weatherdata=dict_weatherdata,
-            p_forecast=paris_forecast,
-            
+            # p_forecast=paris_forecast,
+            # t_forecast=tokyo_forecast,
+            # m_forecast=montreal_forecast,
+            wforecasts=forecasts,
+
             #horaire=heures,
-            dirs=direcs,
-            ptimes=passtimes
+            dirs=direcs, ptimes=passtimes
             )
 
 

@@ -12,12 +12,6 @@
 
 
     <h2>Weather</h2>
-    {# <ul>
-    {% for c in content %}
-        <li>: {{ c }}</li>
-    {% endfor %}
-    </ul> #}
-
       <h3>Current weather</h3>
       <ul>
       {% for citydata in weatherdata %}
@@ -33,12 +27,37 @@
       </ul>
 
       <h3>Weather forecast</h3>
+      {% for city in wforecasts %}
+        <p>{{ city }}:</p>
+        <ul>
+          {% for datetime in wforecasts[city] %}
+            <li>
+              {{ datetime }}<br>
+              {{ wforecasts[city][datetime] }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+
+
+      {# <p>Paris:</p>
       <ul>
-        {% for j in p_forecast %}
-          <li>{{ j }} : {{ p_forecast[j] }}</li>
+        {% for p in p_forecast %}
+          <li>{{ p }} : {{ p_forecast[p] }}</li>
         {% endfor %}
       </ul>
-
+      <p>Tokyo:</p>
+      <ul>
+        {% for t in t_forecast %}
+          <li>{{ t }} : {{ t_forecast[t] }}</li>
+        {% endfor %}
+      </ul>
+      <p>Montréal:</p>
+      <ul>
+        {% for m in m_forecast %}
+          <li>{{ m }} : {{ m_forecast[m] }}</li>
+        {% endfor %}
+      </ul> #}
 
 
 
