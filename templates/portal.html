@@ -6,56 +6,66 @@
 
   <body>
     <h2>Current time</h2>
-    <p>Paris: {{ ftime }} </p>
-    <p>Tokyo: {{ jtime }} </p>
-    <p>Montréal: {{ qtime }} </p>
+      <p>Paris: {{ ftime }} </p>
+      <p>Tokyo: {{ jtime }} </p>
+      <p>Montréal: {{ qtime }} </p>
 
 
-    <h2>Weather forecast</h2>
+    <h2>Weather</h2>
     {# <ul>
     {% for c in content %}
         <li>: {{ c }}</li>
     {% endfor %}
     </ul> #}
 
-    <ul>
-    {% for citydata in weatherdata %}
-      <li>
-      {{ citydata['Cityname'] }}:
-          {% for key in citydata.keys() if key != 'Cityname' %}
-              <ul>
-                  <li>{{ key }} : {{ citydata[key] }}</li>
-              </ul>
-          {% endfor %}
-      </li>
-    {% endfor %}
-    </ul>
+      <h3>Current weather</h3>
+      <ul>
+      {% for citydata in weatherdata %}
+        <li>
+        {{ citydata['Cityname'] }}:
+            {% for key in citydata.keys() if key != 'Cityname' %}
+                <ul>
+                    <li>{{ key }} : {{ citydata[key] }}</li>
+                </ul>
+            {% endfor %}
+        </li>
+      {% endfor %}
+      </ul>
+
+      <h3>Weather forecast</h3>
+      <ul>
+        {% for j in p_forecast %}
+          <li>{{ j }} : {{ p_forecast[j] }}</li>
+        {% endfor %}
+      </ul>
+
+
 
 
     <h2>RATP info</h2>
-    <p>Next train in Sceaux station: </p>
-    <p>{{ horaire }}</p>
+      <p>Next train in Sceaux station: </p>
+      {# <p>{{ horaire }}</p> #}
 
-    {% set listindex = {} %}
-    {% for t in ptimes if t == "Heure de passage" %}
-          {% set _ = listindex.update({'index' : ptimes.index(t)}) %}
-    {% endfor %}
+      {% set listindex = {} %}
+      {% for t in ptimes if t == "Heure de passage" %}
+            {% set _ = listindex.update({'index' : ptimes.index(t)}) %}
+      {% endfor %}
 
-    <ul>
-    {% for d in dirs %}
-        <li>
-        {{ d }}:
-            {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                {% for times1 in ptimes[:listindex['index']] %}
-                    {{ times1 }}
-                {% endfor %}
-            {% else %}
-                {% for times2 in ptimes[listindex['index']+1:] %}
-                    {{ times2 }}
-                {% endfor %}
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
+      <ul>
+      {% for d in dirs %}
+          <li>
+          {{ d }}:
+              {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
+                  {% for times1 in ptimes[:listindex['index']] %}
+                      {{ times1 }}
+                  {% endfor %}
+              {% else %}
+                  {% for times2 in ptimes[listindex['index']+1:] %}
+                      {{ times2 }}
+                  {% endfor %}
+              {% endif %}
+          </li>
+      {% endfor %}
+      </ul>
   </body>
 </html>
