@@ -11,22 +11,7 @@
       <p>Montréal: {{ qtime }} </p>
 
 
-    <h2>Weather</h2>
-  {#    <h3>Current weather</h3>
-      <ul>
-      {% for citydata in weatherdata %}
-        <li>
-        {{ citydata['Cityname'] }}:
-            {% for key in citydata.keys() if key != 'Cityname' %}
-                <ul>
-                    <li>{{ key }} : {{ citydata[key] }}</li>
-                </ul>
-            {% endfor %}
-        </li>
-      {% endfor %}
-    </ul> #}
-
-      <h3>Weather forecast</h3>
+    <h2>Weather forecast</h2>
       {% for city in wforecasts %}
         <p>{{ city }}:</p>
         <ul>

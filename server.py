@@ -17,30 +17,6 @@ def get_jptime():
 def get_quebectime():
     return arrow.now('Canada/Eastern').format('dddd, MMMM Do YYYY, HH:mm')
 
-# def get_citiesweatherdata():
-#     weather_key = api_keys['weather']
-#     r = requests.get(
-#         'http://api.openweathermap.org/data/2.5/group?id=6455259,1850147,6077243&units=metric&appid=' + weather_key
-#     )
-#     paris_weather = json.loads(r.text)['list'][0]
-#     tokyo_weather = json.loads(r.text)['list'][1]
-#     montreal_weather = json.loads(r.text)['list'][-1]
-# 
-#     return paris_weather, tokyo_weather, montreal_weather
-#
-# def parse_weatherdata(wdata):
-#     main = wdata['weather'][0]['main']
-#     description = wdata['weather'][0]['description']
-#     icon = wdata['weather'][0]['icon']
-#     temp = wdata['main']['temp']
-#     humidity = wdata['main']['humidity']
-#     wind = wdata['wind']['speed']
-#     clouds = wdata['clouds']['all']
-#     name = wdata['name']
-#     return { 'Cityname':name,
-#         'Weather':main, 'Description':description, 'Icon':icon,
-#         'Temperature':temp, 'Humidity':humidity, 'Wind':wind, 'Clouds':clouds }
-
 
 def get_weatherdatalist(c):
     # get cityID
@@ -60,7 +36,7 @@ def get_weatherdatalist(c):
         weatherforecast_list = json.loads(res.text)['list'][:5]
     return weatherforecast_list
 
-def parse_weatherdata2(city):
+def get_weatherdata(city):
     forecastbytime = {}
     for w in get_weatherdatalist(city):
         temp = w['main']['temp']
@@ -106,16 +82,10 @@ def index():
     jptime = get_jptime()
     qctime = get_quebectime()
 
-    # WEATHER
-    # CURRENT
-    # dict_weatherdata = list()
-    # for databycity in get_citiesweatherdata():
-    #     dict_weatherdata.append(parse_weatherdata(databycity))
-
-    # FORECAST
+    # WEATHER FORECAST
     forecasts = {}
     for city in ['Paris', 'Tokyo', 'Montreal']:
-        forecasts[city] = parse_weatherdata2(city)
+        forecasts[city] = get_weatherdata(city)
 
     # RATP
     passtimes, heures, direcs = get_traininfo()
@@ -124,8 +94,6 @@ def index():
     return render_template('portal.html',
             ftime=frtime, jtime=jptime, qtime=qctime,
 
-            # content=get_citiesweatherdata(),
-            # weatherdata=dict_weatherdata,
             wforecasts=forecasts,
 
             #horaire=heures,
