@@ -17,29 +17,29 @@ def get_jptime():
 def get_quebectime():
     return arrow.now('Canada/Eastern').format('dddd, MMMM Do YYYY, HH:mm')
 
-def get_citiesweatherdata():
-    weather_key = api_keys['weather']
-    r = requests.get(
-        'http://api.openweathermap.org/data/2.5/group?id=6455259,1850147,6077243&units=metric&appid=' + weather_key
-    )
-    paris_weather = json.loads(r.text)['list'][0]
-    tokyo_weather = json.loads(r.text)['list'][1]
-    montreal_weather = json.loads(r.text)['list'][-1]
-
-    return paris_weather, tokyo_weather, montreal_weather
-
-def parse_weatherdata(wdata):
-    main = wdata['weather'][0]['main']
-    description = wdata['weather'][0]['description']
-    icon = wdata['weather'][0]['icon']
-    temp = wdata['main']['temp']
-    humidity = wdata['main']['humidity']
-    wind = wdata['wind']['speed']
-    clouds = wdata['clouds']['all']
-    name = wdata['name']
-    return { 'Cityname':name,
-        'Weather':main, 'Description':description, 'Icon':icon,
-        'Temperature':temp, 'Humidity':humidity, 'Wind':wind, 'Clouds':clouds }
+# def get_citiesweatherdata():
+#     weather_key = api_keys['weather']
+#     r = requests.get(
+#         'http://api.openweathermap.org/data/2.5/group?id=6455259,1850147,6077243&units=metric&appid=' + weather_key
+#     )
+#     paris_weather = json.loads(r.text)['list'][0]
+#     tokyo_weather = json.loads(r.text)['list'][1]
+#     montreal_weather = json.loads(r.text)['list'][-1]
+# 
+#     return paris_weather, tokyo_weather, montreal_weather
+#
+# def parse_weatherdata(wdata):
+#     main = wdata['weather'][0]['main']
+#     description = wdata['weather'][0]['description']
+#     icon = wdata['weather'][0]['icon']
+#     temp = wdata['main']['temp']
+#     humidity = wdata['main']['humidity']
+#     wind = wdata['wind']['speed']
+#     clouds = wdata['clouds']['all']
+#     name = wdata['name']
+#     return { 'Cityname':name,
+#         'Weather':main, 'Description':description, 'Icon':icon,
+#         'Temperature':temp, 'Humidity':humidity, 'Wind':wind, 'Clouds':clouds }
 
 
 def get_weatherdatalist(c):
@@ -60,22 +60,7 @@ def get_weatherdatalist(c):
         weatherforecast_list = json.loads(res.text)['list'][:5]
     return weatherforecast_list
 
-def get_cityid(c):
-    if c == 'Paris':
-        cityid = '6455259'
-    elif c == 'Tokyo':
-        cityid = '1850147'
-    elif c == 'Montreal':
-        cityid = '6077243'
-    # City IDs for openweathermap
-    # paris_id = '6455259'
-    # tokyo_id = '1850147'
-    # montreal_id = '6077243'
-    return cityid
-
 def parse_weatherdata2(city):
-    # c_id = get_cityid(city)
-
     forecastbytime = {}
     for w in get_weatherdatalist(city):
         temp = w['main']['temp']
@@ -122,19 +107,15 @@ def index():
     qctime = get_quebectime()
 
     # WEATHER
-    #current
-    dict_weatherdata = list()
-    for databycity in get_citiesweatherdata():
-        dict_weatherdata.append(parse_weatherdata(databycity))
+    # CURRENT
+    # dict_weatherdata = list()
+    # for databycity in get_citiesweatherdata():
+    #     dict_weatherdata.append(parse_weatherdata(databycity))
 
     # FORECAST
     forecasts = {}
     for city in ['Paris', 'Tokyo', 'Montreal']:
-        #forecasts.append(parse_weatherdata2(city))
         forecasts[city] = parse_weatherdata2(city)
-    # paris_forecast = parse_weatherdata2(paris_id)
-    # tokyo_forecast = parse_weatherdata2(tokyo_id)
-    # montreal_forecast = parse_weatherdata2(montreal_id)
 
     # RATP
     passtimes, heures, direcs = get_traininfo()
@@ -144,10 +125,7 @@ def index():
             ftime=frtime, jtime=jptime, qtime=qctime,
 
             # content=get_citiesweatherdata(),
-            weatherdata=dict_weatherdata,
-            # p_forecast=paris_forecast,
-            # t_forecast=tokyo_forecast,
-            # m_forecast=montreal_forecast,
+            # weatherdata=dict_weatherdata,
             wforecasts=forecasts,
 
             #horaire=heures,

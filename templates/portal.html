@@ -12,7 +12,7 @@
 
 
     <h2>Weather</h2>
-      <h3>Current weather</h3>
+  {#    <h3>Current weather</h3>
       <ul>
       {% for citydata in weatherdata %}
         <li>
@@ -24,7 +24,7 @@
             {% endfor %}
         </li>
       {% endfor %}
-      </ul>
+    </ul> #}
 
       <h3>Weather forecast</h3>
       {% for city in wforecasts %}
@@ -38,27 +38,6 @@
           {% endfor %}
         </ul>
       {% endfor %}
-
-
-      {# <p>Paris:</p>
-      <ul>
-        {% for p in p_forecast %}
-          <li>{{ p }} : {{ p_forecast[p] }}</li>
-        {% endfor %}
-      </ul>
-      <p>Tokyo:</p>
-      <ul>
-        {% for t in t_forecast %}
-          <li>{{ t }} : {{ t_forecast[t] }}</li>
-        {% endfor %}
-      </ul>
-      <p>Montréal:</p>
-      <ul>
-        {% for m in m_forecast %}
-          <li>{{ m }} : {{ m_forecast[m] }}</li>
-        {% endfor %}
-      </ul> #}
-
 
 
     <h2>RATP info</h2>
