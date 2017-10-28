@@ -23,6 +23,7 @@
           {% endfor %}
         </ul>
       {% endfor %}
+      <img src="/weather.png" />
 
 
     <h2>RATP info</h2>
@@ -30,20 +31,21 @@
       {# <p>{{ horaire }}</p> #}
 
       {% set listindex = {} %}
-      {% for t in ptimes if t == "Heure de passage" %}
-            {% set _ = listindex.update({'index' : ptimes.index(t)}) %}
+      {% for t in trains.heures_passage if t == "Heure de passage" %}
+            {% set _ = listindex.update({'index' : trains.heures_passage.index(t)}) %}
       {% endfor %}
+      {# devrait être calculé par la classe TrainInfo #}
 
       <ul>
-      {% for d in dirs %}
+      {% for d in trains.directions %}
           <li>
           {{ d }}:
               {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                  {% for times1 in ptimes[:listindex['index']] %}
+                  {% for times1 in trains.heures_passage[:listindex['index']] %}
                       {{ times1 }}
                   {% endfor %}
               {% else %}
-                  {% for times2 in ptimes[listindex['index']+1:] %}
+                  {% for times2 in trains.heures_passage[listindex['index']+1:] %}
                       {{ times2 }}
                   {% endfor %}
               {% endif %}

@@ -18,22 +18,22 @@ def get_quebectime():
     return arrow.now('Canada/Eastern').format('dddd, MMMM Do YYYY, HH:mm')
 
 
-def get_weatherdatalist(c):
-    # get cityID
-    if c == 'Paris':
-        cid = '6455259'
-    elif c == 'Tokyo':
-        cid = '1850147'
-    elif c == 'Montreal':
-        cid = '6077243'
+city_id = {
+    'Paris': 6455259,
+    'Tokyo': 1850147,
+    'Montreal': 6077243,
+}
 
+
+def get_weatherdatalist(city):
     # get weather forecast data
     weather_key = api_keys['weather']
     res = requests.get(
-        'http://api.openweathermap.org/data/2.5/forecast?id=' + cid + '&units=metric&appid=' + weather_key
-    )
-    if c == json.loads(res.text)['city']['name']:
-        weatherforecast_list = json.loads(res.text)['list'][:5]
+        'http://api.openweathermap.org/data/2.5/forecast',
+        params={'id': city_id[city], 'units': 'metric', 'appid': weather_key},
+    ).json()
+    assert city == res['city']['name']
+    weatherforecast_list = res['list'][:5]
     return weatherforecast_list
 
 def get_weatherdata(city):
@@ -59,6 +59,13 @@ def get_weatherdata(city):
     return forecastbytime
 
 
+class TrainInfo:
+    def __init__(self, directions, heures_passage, heures_wrap):
+        self.directions = directions
+        self.heures_passage = heures_passage
+        self.heures_wrap = heures_wrap
+
+
 def get_traininfo():
     #https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&departure_date=25%2F10%2F2017&departure_hour=12&departure_minute=45&op=Rechercher&form_build_id=form-3s9chyTmgWZFUA58gygtM3MiRfgCx1WMrqvDQqAKHfE&form_id=scheduledform
     #page = requests.get('https://www.ratp.fr/horaires?networks=rer&line_rer=B&stop_point_rer=Sceaux&type=now&op=Rechercher')
@@ -72,7 +79,15 @@ def get_traininfo():
     # remove the first item
     if passingtime[0] == "Heure de passage":
         passingtime.remove(passingtime[0])
-    return passingtime, heurewrap, directions
+    #return passingtime, heurewrap, directions
+    return TrainInfo(directions, passingtime, heurewrap)
+
+
+# @app.route('/weather.png', methods=['GET'])
+# def weather_graph():
+#     response = flask.response(content_type='image/png')
+#     response.body = generate_png_graph()
+#     return response
 
 
 @app.route('/', methods=['GET'])
@@ -88,16 +103,21 @@ def index():
         forecasts[city] = get_weatherdata(city)
 
     # RATP
-    passtimes, heures, direcs = get_traininfo()
+    trains = get_traininfo()
 
 
     return render_template('portal.html',
+    #         time=time_info,
+    #         weather=weather_info,
+    #         trains=trains_info,
+    # )
+
             ftime=frtime, jtime=jptime, qtime=qctime,
 
             wforecasts=forecasts,
 
             #horaire=heures,
-            dirs=direcs, ptimes=passtimes
+            trains=trains
             )
 
 
