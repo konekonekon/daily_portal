@@ -6,19 +6,19 @@
 
   <body>
     <h2>Current time</h2>
-      <p>Paris: {{ ftime }} </p>
-      <p>Tokyo: {{ jtime }} </p>
-      <p>Montréal: {{ qtime }} </p>
+    {% for t in times %}
+      <p>{{ t }}: {{ times[t] }}</p>
+    {% endfor %}
 
 
     <h2>Weather forecast</h2>
-      {% for city in wforecasts %}
+      {% for city in forecasts %}
         <p>{{ city }}:</p>
         <ul>
-          {% for datetime in wforecasts[city] %}
+          {% for datetime in forecasts[city] %}
             <li>
               {{ datetime }}<br>
-              {{ wforecasts[city][datetime] }}
+              {{ forecasts[city][datetime] }}
             </li>
           {% endfor %}
         </ul>
@@ -28,29 +28,22 @@
 
     <h2>RATP info</h2>
       <p>Next train in Sceaux station: </p>
-      {# <p>{{ horaire }}</p> #}
-
-      {% set listindex = {} %}
-      {% for t in trains.heures_passage if t == "Heure de passage" %}
-            {% set _ = listindex.update({'index' : trains.heures_passage.index(t)}) %}
-      {% endfor %}
-      {# devrait être calculé par la classe TrainInfo #}
 
       <ul>
       {% for d in trains.directions %}
           <li>
           {{ d }}:
               {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                  {% for times1 in trains.heures_passage[:listindex['index']] %}
+                  {% for times1 in trains.passingtime_dir1 %}
                       {{ times1 }}
                   {% endfor %}
               {% else %}
-                  {% for times2 in trains.heures_passage[listindex['index']+1:] %}
+                  {% for times2 in trains.passingtime_dir2 %}
                       {{ times2 }}
                   {% endfor %}
               {% endif %}
           </li>
       {% endfor %}
-      </ul>
+    </ul>
   </body>
 </html>
