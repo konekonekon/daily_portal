@@ -21,13 +21,16 @@ def index():
         time_info[city] = time.get_times(city)
 
     # WEATHER FORECAST
-    weather_info = {}
-    for city in cities:
-        weather_info[city] = weather.get_weatherdata(city)
+    # create the same result as above structure
+    weather_info = {
+        city: weather.get_weatherdata(city)
+        for city in cities
+    }
 
     # RATP
     train_info = train.get_traininfo()
 
+    # send to html file
     return render_template(
         'portal.html',
         times = time_info,

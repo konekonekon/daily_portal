@@ -1,14 +1,22 @@
 import requests
 from api_keys import api_keys
 
-class WeatherInfo:
 
-    def __init__(self, forecasts):
-        weather_info = {}
-        for city in ['Paris', 'Tokyo', 'Montreal']:
-            weather_info[city] = weather.get_weatherdata(city)
-        self.forecasts = forecasts
+class Weather:
 
+    def __init__(self, w):
+        self.datehours = w['dt_txt']
+        self.temp = w['main']['temp']
+        self.humidity = w['main']['humidity']
+        self.main = w['weather'][0]['main']
+        self.description = w['weather'][0]['description']
+        self.icon = w['weather'][0]['icon']
+        self.wind = w['wind']['speed']
+        self.clouds = w['clouds']['all']
+
+    # for test, don't used.
+    def __str__(self):
+        return '{} -> {}°C'.format(self.datehours, self.temp)
 
 
 city_id = {
@@ -17,7 +25,7 @@ city_id = {
     'Montreal': 6077243,
 }
 
-def get_weatherdatalist(city):
+def get_weatherdata(city):
     # get weather forecast data
     weather_key = api_keys['weather']
     res = requests.get(
@@ -27,27 +35,8 @@ def get_weatherdatalist(city):
     # suppose a case where the city name is coherent
     assert city == res['city']['name']
     weatherforecast_list = res['list'][:5]
-    return weatherforecast_list
-
-def get_weatherdata(city):
-    forecastbytime = {}
-    for w in get_weatherdatalist(city):
-        temp = w['main']['temp']
-        humidity = w['main']['humidity']
-        main = w['weather'][0]['main']
-        description = w['weather'][0]['description']
-        icon = w['weather'][0]['icon']
-        wind = w['wind']['speed']
-        clouds = w['clouds']['all']
-        datehours = w['dt_txt']
-        forecastbytime[datehours] = {
-            'temp' : temp,
-            'humidity' : humidity,
-            'weather' : main,
-            'description' : description,
-            'icon' : icon,
-            'wind' : wind,
-            'clouds' : clouds
-        }
-    # return forecastbytime
-    return WeatherInfo(forecastbytime)
+    # weatherforecast_list takes 5 elements by time
+    # for each element,
+    # Weather(w) creates sevevral objects
+    # => return a list of objects, containing 5 elements by time
+    return [Weather(w) for w in weatherforecast_list]

@@ -15,10 +15,16 @@
       {% for city in forecasts %}
         <p>{{ city }}:</p>
         <ul>
-          {% for datetime in forecasts[city] %}
+          {% for f in forecasts[city] %}
             <li>
-              {{ datetime }}<br>
-              {{ forecasts[city][datetime] }}
+              {{ f.datehours }}<br>
+              {{ f.main }},
+              {{ f.description }},
+              {{ f.icon }},
+              {{ f.temp }}°C,
+              {{ f.humidity }}%,
+              {{ f.wind }},
+              {{ f.clouds }}%
             </li>
           {% endfor %}
         </ul>
