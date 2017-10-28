@@ -26,14 +26,13 @@ def index():
         weather_info[city] = weather.get_weatherdata(city)
 
     # RATP
-    trains_info = train.get_traininfo()
-
+    train_info = train.get_traininfo()
 
     return render_template(
         'portal.html',
         times = time_info,
         forecasts = weather_info,
-        trains=trains_info
+        trains = train_info
     )
 
 if __name__ == "__main__":

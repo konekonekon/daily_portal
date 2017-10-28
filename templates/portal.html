@@ -28,18 +28,17 @@
 
     <h2>RATP info</h2>
       <p>Next train in Sceaux station: </p>
-
       <ul>
       {% for d in trains.directions %}
           <li>
           {{ d }}:
               {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                  {% for times1 in trains.passingtime_dir1 %}
-                      {{ times1 }}
+                  {% for time1 in trains.passingtimes_dir1 %}
+                      {{ time1 }}
                   {% endfor %}
               {% else %}
-                  {% for times2 in trains.passingtime_dir2 %}
-                      {{ times2 }}
+                  {% for time2 in trains.passingtimes_dir2 %}
+                      {{ time2 }}
                   {% endfor %}
               {% endif %}
           </li>
