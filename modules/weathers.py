@@ -39,4 +39,5 @@ def get_weatherdata(city):
     # for each element,
     # Weather(w) creates sevevral objects
     # => return a list of objects, containing 5 elements by time
+    # [objects1, objects2,..]
     return [Weather(w) for w in weatherforecast_list]

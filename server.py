@@ -19,9 +19,11 @@ def index():
     time_info = {}
     for city in cities:
         time_info[city] = time.get_times(city)
+    print(time_info)
 
     # WEATHER FORECAST
     # create the same result as above structure
+    # {city1 : [objects1, objects2,..]}, {city2 : [objects1, objects2,..]}, ..
     weather_info = {
         city: weather.get_weatherdata(city)
         for city in cities
