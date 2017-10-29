@@ -1,15 +1,31 @@
 from flask import Flask, render_template
+import requests
 import modules.times as time
 import modules.weathers as weather
 import modules.trains as train
 
+import matplotlib.pyplot as plt
+import numpy as np
+# import seaborn as sns
+import pandas as pd
+import io
+from flask import send_file
+
+
 app = Flask(__name__)
 
-# @app.route('/weather.png', methods=['GET'])
-# def weather_graph():
-#     response = flask.response(content_type='image/png')
-#     response.body = generate_png_graph()
-#     return response
+
+def generate_png_graph():
+    df=pd.DataFrame({'xvalues': range(1,101), 'yvalues': np.random.randn(100) })
+    return plt.plot('xvalues', 'yvalues', data=df)
+
+
+@app.route('/weather.png', methods=['GET'])
+def weather_graph():
+    # response = flask.response(content_type='image/png')
+    # response.body = generate_png_graph()
+    # return response
+    return send_file(io.BytesIO(generate_png_graph()))
 
 @app.route('/', methods=['GET'])
 def index():
