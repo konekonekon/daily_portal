@@ -15,17 +15,18 @@ from flask import send_file
 app = Flask(__name__)
 
 
-def generate_png_graph():
+def generate_png_graph(output):
     df=pd.DataFrame({'xvalues': range(1,101), 'yvalues': np.random.randn(100) })
-    return plt.plot('xvalues', 'yvalues', data=df)
-
+    # plot
+    plt.plot('xvalues', 'yvalues', data=df)
+    plt.savefig(output, format='png')
 
 @app.route('/weather.png', methods=['GET'])
 def weather_graph():
-    # response = flask.response(content_type='image/png')
-    # response.body = generate_png_graph()
-    # return response
-    return send_file(io.BytesIO(generate_png_graph()))
+    buff = io.BytesIO()
+    generate_png_graph(buff)
+    buff.seek(0)
+    return send_file(buff, mimetype='image/png')
 
 @app.route('/', methods=['GET'])
 def index():
@@ -35,7 +36,6 @@ def index():
     time_info = {}
     for city in cities:
         time_info[city] = time.get_times(city)
-    print(time_info)
 
     # WEATHER FORECAST
     # create the same result as above structure
