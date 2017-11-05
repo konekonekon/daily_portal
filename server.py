@@ -50,7 +50,6 @@ def generate_png_graph(output):
     hourlist = []
     templist = []
     humiditylist = []
-    windlist = []
     cloudslist = []
 
     #for city in weather_info:
@@ -59,12 +58,25 @@ def generate_png_graph(output):
         hourlist.append(f.datehours.split("2017-")[1].split(":")[0] + "h")
         templist.append(f.temp)
         humiditylist.append(f.humidity)
-        windlist.append(f.wind)
         cloudslist.append(f.clouds)
-        # print(datelist)
+    # print(hourlist)
 
+    plt.figure(1)
+    #humidity
+    df2 = pd.DataFrame({'xvalues2': hourlist, 'yvalues2': humiditylist })
+    plt.plot('xvalues2', 'yvalues2', data=df2, color='skyblue', linestyle='-', linewidth=3)
+    plt.text(hourlist[1], humiditylist[-1], "Humidity", fontsize=14, color='blue', weight='semibold')
+    #clouds
+    df3 = pd.DataFrame({'xvalues3': hourlist, 'yvalues3': cloudslist })
+    plt.plot('xvalues3', 'yvalues3', data=df3, color='green', alpha=0.5, linestyle='-', linewidth=3)
+    plt.text(hourlist[1], cloudslist[-1], "Clouds", fontsize=14, color='green', weight='semibold')
+    plt.subplot(211)
+    #tempature
     df = pd.DataFrame({'xvalues': hourlist, 'yvalues': templist })
-    plt.plot('xvalues', 'yvalues', data=df)
+    plt.plot('xvalues', 'yvalues', data=df, color='red', alpha=0.3, linestyle='-', linewidth=3)
+    plt.text(hourlist[1], templist[-1], "Tempature", fontsize=14, color='red', weight='semibold')
+    plt.subplot(212)
+
     plt.savefig(output, format='png')
 
 

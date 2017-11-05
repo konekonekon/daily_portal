@@ -14,6 +14,9 @@
     <h2>Weather forecast</h2>
       {% for city in forecasts %}
         <p>{{ city }}:</p>
+      {#  {% if city == "Tokyo" %}
+            <img src="/weather.png" />
+        {% endif %} #}
         <ul>
           {% for f in forecasts[city] %}
             <li>
