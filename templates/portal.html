@@ -14,9 +14,41 @@
     <h2>Weather forecast</h2>
       {% for city in forecasts %}
         <p>{{ city }}:</p>
-      {#  {% if city == "Tokyo" %}
-            <img src="/weather.png" />
+        <script>
+            var req = new XMLHttpRequest();
+
+            //Get data from server
+            req.onreadystatechange = function()
+            {
+                if (req.readyState == 4) {
+                    if (req.status != 200) {
+                        console.log("Load error.");
+                    } else {
+                        console.log("Got response.");
+                        //how to load image?
+                        // create tag?
+                    }
+                }
+            };
+            //Send data to server
+            req.open('POST', '/weather');
+            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            req.send('cityname=' + {{ city }});
+            //return false;
+        </script>
+
+        {# <img src="/weather.png" /> #}
+
+        {# {% if city == "Paris" %}
+            <img src="/weather-paris.png" />
+        {% endif %}
+        {% if city == "Tokyo" %}
+            <img src="/weather-tokyo.png" />
+        {% endif %}
+        {% if city == "Montreal" %}
+            <img src="/weather-montreal.png" />
         {% endif %} #}
+
         <ul>
           {% for f in forecasts[city] %}
             <li>
@@ -32,7 +64,6 @@
           {% endfor %}
         </ul>
       {% endfor %}
-      <img src="/weather.png" />
 
 
     <h2>RATP info</h2>
