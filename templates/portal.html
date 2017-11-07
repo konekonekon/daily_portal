@@ -2,23 +2,48 @@
 <html lang="en">
   <head>
     <title>Daily Portal</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
   </head>
 
   <body>
-    <h2>Current time</h2>
-    {% for t in times %}
-      <p>{{ t }}: {{ times[t].city_time }}</p>
-    {% endfor %}
+    <section>
+    <h1>Current time</h1>
+      {% for t in times %}
+        <p><strong>{{ t }}</strong>: {{ times[t].city_time }}</p>
+      {% endfor %}
+    </section>
 
+    <section>
+    <h1>RATP info</h1>
+      <p>Next train in <i>Sceaux</i> station: </p>
 
-    <h2>Weather forecast</h2>
+        {% for d in trains.directions %}
+        <p>
+          {{ d }}:
+            {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
+              {% for time1 in trains.passingtimes_dir1 %}
+                <strong>{{ time1 }}</strong>
+              {% endfor %}
+            {% else %}
+              {% for time2 in trains.passingtimes_dir2 %}
+                <strong>{{ time2 }}</strong>
+              {% endfor %}
+            {% endif %}
+        </p>
+        {% endfor %}
+
+    </section>
+
+    <section>
+    <h1>Weather forecast</h1>
       {% for city in forecasts %}
-        <p>{{ city }}:</p>
+        <h3>{{ city }}</h3>
 
         <img src="/weather.png?city={{city}}" />
 
-        <table>
+        <div class="tables">
           {% for f in forecasts[city] %}
+          <table>
                 <tr>
                     <th>{{ f.datehours }}</th>
                 </tr>
@@ -38,30 +63,11 @@
                       </ul>
                     </td>
                 </tr>
-            {% endfor %}
-        </table>
-
-
+          </table>
+          {% endfor %}
+        </div>
       {% endfor %}
+    </section>
 
-
-    <h2>RATP info</h2>
-      <p>Next train in Sceaux station: </p>
-      <ul>
-      {% for d in trains.directions %}
-          <li>
-          {{ d }}:
-              {% if d == 'Charles-de-Gaulle. Mitry-Claye.' %}
-                  {% for time1 in trains.passingtimes_dir1 %}
-                      {{ time1 }}
-                  {% endfor %}
-              {% else %}
-                  {% for time2 in trains.passingtimes_dir2 %}
-                      {{ time2 }}
-                  {% endfor %}
-              {% endif %}
-          </li>
-      {% endfor %}
-    </ul>
   </body>
 </html>
