@@ -35,22 +35,25 @@ def generate_png_graph(output, cn):
     df = pd.DataFrame({'xvalues': hourlist, 'yvalues': templist })
     plt.plot('xvalues', 'yvalues', data=df, color='red', alpha=0.3, linestyle='-', linewidth=3)
     plt.ylabel('°C')
-    plt.title("Temperature")
+    plt.grid(True)
+    plt.title("Temperature", color='red', fontsize=15)
     #clouds
     plt.subplot(312)
     df3 = pd.DataFrame({'xvalues3': hourlist, 'yvalues3': cloudslist })
     plt.plot('xvalues3', 'yvalues3', data=df3, color='green', alpha=0.5, linestyle='-', linewidth=3)
     plt.ylabel('%')
-    plt.title("Clouds")
+    plt.grid(True)
+    plt.title("Clouds", color='green', fontsize=15)
     #humidity
     plt.subplot(313)
     df2 = pd.DataFrame({'xvalues2': hourlist, 'yvalues2': humiditylist })
     plt.plot('xvalues2', 'yvalues2', data=df2, color='skyblue', linestyle='-', linewidth=3)
     plt.ylabel('%')
-    plt.text(hourlist[1], max(humiditylist)-5, 'Humidity',
-        verticalalignment='center', horizontalalignment='left',
-        color='green', fontsize=15)
-    plt.title("Humidity")
+    plt.grid(True)
+    # plt.text(hourlist[1], max(humiditylist)-5, 'Humidity',
+    #     verticalalignment='center', horizontalalignment='left',
+    #     color='green', fontsize=15)
+    plt.title("Humidity", color='blue', fontsize=15)
 
     plt.tight_layout()
     plt.savefig(output, format='png')
