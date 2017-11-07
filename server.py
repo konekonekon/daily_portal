@@ -11,7 +11,6 @@ import pandas as pd
 import io
 
 
-
 app = Flask(__name__)
 weather_info = {}
 
@@ -50,9 +49,6 @@ def generate_png_graph(output, cn):
     plt.plot('xvalues2', 'yvalues2', data=df2, color='skyblue', linestyle='-', linewidth=3)
     plt.ylabel('%')
     plt.grid(True)
-    # plt.text(hourlist[1], max(humiditylist)-5, 'Humidity',
-    #     verticalalignment='center', horizontalalignment='left',
-    #     color='green', fontsize=15)
     plt.title("Humidity", color='blue', fontsize=15)
 
     plt.tight_layout()
