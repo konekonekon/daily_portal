@@ -5,7 +5,7 @@ from api_keys import api_keys
 class Weather:
 
     def __init__(self, w):
-        self.datehours = w['dt_txt']
+        self.datehours = w['dt_txt'].split(":")[0] + "h"
         self.temp = w['main']['temp']
         self.humidity = w['main']['humidity']
         self.main = w['weather'][0]['main']

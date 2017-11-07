@@ -16,20 +16,32 @@
         <p>{{ city }}:</p>
 
         <img src="/weather.png?city={{city}}" />
-        <ul>
+
+        <table>
           {% for f in forecasts[city] %}
-            <li>
-              {{ f.datehours }}<br>
-              {{ f.main }},
-              {{ f.description }},
-              <img src="http://openweathermap.org/img/w/{{ f.icon }}.png" />,
-              {{ f.temp }}°C,
-              {{ f.humidity }}%,
-              {{ f.wind }}m/sec,
-              {{ f.clouds }}%
-            </li>
-          {% endfor %}
-        </ul>
+                <tr>
+                    <th>{{ f.datehours }}</th>
+                </tr>
+                <tr>
+                    <td>
+                      <ul>
+                        <li><img src="http://openweathermap.org/img/w/{{ f.icon }}.png" /></li>
+                        <li>{{ f.description }}</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul>
+                        <li>Temperature: {{ f.temp }}°C</li>
+                        <li>Humidity: {{ f.humidity }}%</li>
+                        <li>Clouds: {{ f.clouds }}%</li>
+                        <li>Wind: {{ f.wind }}m/sec</li>
+                      </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
       {% endfor %}
 
 

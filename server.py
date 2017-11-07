@@ -23,7 +23,7 @@ def generate_png_graph(output, cn):
     cloudslist = []
 
     for f in weather_info[cn]:
-        hourlist.append(f.datehours.split("2017-")[1].split(":")[0] + "h")
+        hourlist.append(f.datehours.split("2017-")[1])
         templist.append(f.temp)
         humiditylist.append(f.humidity)
         cloudslist.append(f.clouds)
