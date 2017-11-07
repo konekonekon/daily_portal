@@ -1,0 +1,44 @@
+html {
+  margin: 0 auto;
+}
+
+body {
+  font: 1em 'Open Sans', sans-serif;
+  color: #3d3d29;
+  margin: auto;
+  margin-bottom: 50px;
+  width: 90%;
+  background: #009900;
+  text-align: center;
+}
+
+section {
+  background: white;
+}
+
+section img {
+  /*width: 50%;*/
+}
+
+h1 {
+  margin-top: 50px;
+  font-size: 1.8em;
+  color: #006600;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul li img {
+  display: block;
+  margin: auto;
+}
+
+div.tables {
+  display: flex;
+}
